@@ -444,4 +444,95 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 9,
+  "name": "The wall belongs to us",
+  "room": "The cat wall",
+  "theme": "catwall",
+  "subtitle": "The humans installed shelves. We accepted the challenge.",
+  "hint": "Groom first, then climb. Two vacuums patrol below; bagel power keeps Maliketh safe while he pushes.",
+  "lesson": "A high route, a busy floor",
+  "difficulty": "For practiced paws",
+  "requiresGroom": true,
+  "heavy": true,
+  "platforms": [
+    {
+      "x": 215,
+      "y": 304,
+      "w": 155,
+      "h": 14
+    },
+    {
+      "x": 360,
+      "y": 226,
+      "w": 110,
+      "h": 14
+    },
+    {
+      "x": 435,
+      "y": 142,
+      "w": 165,
+      "h": 14
+    }
+  ],
+  "climbWalls": [
+    {
+      "x": 390,
+      "y": 142,
+      "w": 18,
+      "h": 338
+    }
+  ],
+  "pots": [
+    {
+      "x": 337,
+      "y": 304
+    },
+    {
+      "x": 555,
+      "y": 142
+    }
+  ],
+  "crateX": 555,
+  "socketX": 700,
+  "plateX": 780,
+  "gateX": 843,
+  "vacuums": [
+    {
+      "min": 235,
+      "max": 415,
+      "speed": 1.7
+    },
+    {
+      "min": 475,
+      "max": 650,
+      "speed": 1.3
+    }
+  ],
+  "bagels": [
+    {
+      "x": 170,
+      "y": 480
+    }
+  ],
+  "route": [
+    {
+      "x": 293,
+      "y": 304
+    },
+    {
+      "x": 399,
+      "y": 226
+    },
+    {
+      "x": 399,
+      "y": 142,
+      "climb": true
+    },
+    {
+      "x": 512,
+      "y": 142
+    }
+  ]
+},
 ];
