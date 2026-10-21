@@ -176,4 +176,67 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 5,
+  "name": "Carbs are a superpower",
+  "room": "The pantry",
+  "theme": "kitchen",
+  "subtitle": "One iron-bound crate. One extremely motivating bagel.",
+  "hint": "Iron crates need bagel power. Maliketh automatically snacks on bagels he walks over.",
+  "lesson": "Bagel-powered strength",
+  "difficulty": "A heavier assignment",
+  "heavy": true,
+  "platforms": [
+    {
+      "x": 165,
+      "y": 404,
+      "w": 130,
+      "h": 14
+    },
+    {
+      "x": 280,
+      "y": 316,
+      "w": 130,
+      "h": 14
+    },
+    {
+      "x": 390,
+      "y": 226,
+      "w": 165,
+      "h": 14
+    }
+  ],
+  "climbWalls": [],
+  "pots": [
+    {
+      "x": 510,
+      "y": 226
+    }
+  ],
+  "crateX": 550,
+  "socketX": 690,
+  "plateX": 773,
+  "gateX": 843,
+  "vacuums": [],
+  "bagels": [
+    {
+      "x": 425,
+      "y": 480
+    }
+  ],
+  "route": [
+    {
+      "x": 230,
+      "y": 404
+    },
+    {
+      "x": 344,
+      "y": 316
+    },
+    {
+      "x": 467,
+      "y": 226
+    }
+  ]
+},
 ];
