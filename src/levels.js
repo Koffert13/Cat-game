@@ -239,4 +239,73 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 6,
+  "name": "The floor is suspicious",
+  "room": "The bathroom",
+  "theme": "bathroom",
+  "subtitle": "Clean tiles. Warm towels. One very unwelcome housemate.",
+  "hint": "Watch the vacuum! Jump over it, or hold E / ACT with bagel-powered Maliketh to stun it.",
+  "lesson": "Meet the robot vacuum",
+  "difficulty": "A moving complication",
+  "heavy": true,
+  "platforms": [
+    {
+      "x": 170,
+      "y": 400,
+      "w": 145,
+      "h": 14
+    },
+    {
+      "x": 290,
+      "y": 308,
+      "w": 130,
+      "h": 14
+    },
+    {
+      "x": 400,
+      "y": 220,
+      "w": 155,
+      "h": 14
+    }
+  ],
+  "climbWalls": [],
+  "pots": [
+    {
+      "x": 510,
+      "y": 220
+    }
+  ],
+  "crateX": 550,
+  "socketX": 690,
+  "plateX": 773,
+  "gateX": 843,
+  "vacuums": [
+    {
+      "min": 235,
+      "max": 430,
+      "speed": 1.2
+    }
+  ],
+  "bagels": [
+    {
+      "x": 170,
+      "y": 480
+    }
+  ],
+  "route": [
+    {
+      "x": 235,
+      "y": 400
+    },
+    {
+      "x": 355,
+      "y": 308
+    },
+    {
+      "x": 466,
+      "y": 220
+    }
+  ]
+},
 ];
