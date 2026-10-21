@@ -38,10 +38,14 @@ export function solveLevel(level, { record = false } = {}) {
     const c = state.cats[0];
     const ledge = level.platforms.find(p => Math.abs(p.y - point.y) < 2 && point.x >= p.x && point.x <= p.x + p.w);
     if (c.y > point.y + 5 && Math.abs(c.x - point.x) > 95) {
-      walk(point.x - Math.sign(point.x - c.x) * 90);
+      let takeoff = point.x - Math.sign(point.x - c.x) * 90;
+      const support = level.platforms.find(p => Math.abs(p.y - c.y) < 2 && c.x > p.x - c.w / 2 && c.x < p.x + p.w + c.w / 2);
+      // A gap needs a leap from the current shelf, before walking off its edge.
+      if (support) takeoff = Math.max(support.x + 2, Math.min(support.x + support.w - 2, takeoff));
+      walk(takeoff);
     }
     tick(); // Release jump before each new leap.
-    until(() => Math.abs(c.x - point.x) < 7 && Math.abs(c.y - point.y) < 3 && c.grounded,
+    until(() => Math.abs(c.x - point.x) < 7 && (point.climb ? c.y <= point.y + 1 : Math.abs(c.y - point.y) < 3 && c.grounded),
       () => {
         // Stay beside a shelf until our feet clear its top. Charging beneath a
         // high shelf would hit its underside before the boosted jump peaks.

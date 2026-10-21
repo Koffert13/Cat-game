@@ -308,4 +308,140 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 7,
+  "name": "Two tiny accidents",
+  "room": "The study",
+  "theme": "study",
+  "subtitle": "The human calls it a collection. Nässla calls it an opportunity.",
+  "hint": "Both bell jars power the door. Boop the lower jar, then jump across to the upper shelf.",
+  "lesson": "Link two bell circuits",
+  "difficulty": "An extra little puzzle",
+  "platforms": [
+    {
+      "x": 190,
+      "y": 370,
+      "w": 150,
+      "h": 14
+    },
+    {
+      "x": 380,
+      "y": 244,
+      "w": 160,
+      "h": 14
+    }
+  ],
+  "climbWalls": [],
+  "pots": [
+    {
+      "x": 292,
+      "y": 370
+    },
+    {
+      "x": 496,
+      "y": 244
+    }
+  ],
+  "crateX": 540,
+  "socketX": 690,
+  "plateX": 773,
+  "gateX": 843,
+  "vacuums": [],
+  "bagels": [],
+  "route": [
+    {
+      "x": 248,
+      "y": 370
+    },
+    {
+      "x": 329,
+      "y": 370
+    },
+    {
+      "x": 451,
+      "y": 244
+    }
+  ]
+},
+{
+  "id": 8,
+  "name": "Spin cycle specialists",
+  "room": "The laundry",
+  "theme": "laundry",
+  "subtitle": "A laundry mountain is just a climbing route in disguise.",
+  "hint": "Two jars, a scratching post and a vacuum. Keep Nässla up high while Maliketh handles the floor.",
+  "lesson": "Climb, snack & coordinate",
+  "difficulty": "Putting it together",
+  "heavy": true,
+  "platforms": [
+    {
+      "x": 180,
+      "y": 390,
+      "w": 150,
+      "h": 14
+    },
+    {
+      "x": 300,
+      "y": 278,
+      "w": 170,
+      "h": 14
+    },
+    {
+      "x": 430,
+      "y": 180,
+      "w": 150,
+      "h": 14
+    }
+  ],
+  "climbWalls": [
+    {
+      "x": 305,
+      "y": 278,
+      "w": 20,
+      "h": 202
+    }
+  ],
+  "pots": [
+    {
+      "x": 289,
+      "y": 390
+    },
+    {
+      "x": 535,
+      "y": 180
+    }
+  ],
+  "crateX": 555,
+  "socketX": 700,
+  "plateX": 780,
+  "gateX": 843,
+  "vacuums": [
+    {
+      "min": 230,
+      "max": 440,
+      "speed": 1.5
+    }
+  ],
+  "bagels": [
+    {
+      "x": 168,
+      "y": 480
+    }
+  ],
+  "route": [
+    {
+      "x": 246,
+      "y": 390
+    },
+    {
+      "x": 315,
+      "y": 278,
+      "climb": true
+    },
+    {
+      "x": 491,
+      "y": 180
+    }
+  ]
+},
 ];
