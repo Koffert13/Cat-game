@@ -314,9 +314,10 @@ export const levels = [
   "room": "The study",
   "theme": "study",
   "subtitle": "The human calls it a collection. Nässla calls it an opportunity.",
-  "hint": "Both bell jars power the door. Boop the lower jar, then jump across to the upper shelf.",
+  "hint": "Both bell jars power the door. Boop the lower jar, then jump across. Maliketh can snack before meeting the vacuum.",
   "lesson": "Link two bell circuits",
   "difficulty": "An extra little puzzle",
+  "heavy": true,
   "platforms": [
     {
       "x": 190,
@@ -346,8 +347,19 @@ export const levels = [
   "socketX": 690,
   "plateX": 773,
   "gateX": 843,
-  "vacuums": [],
-  "bagels": [],
+  "vacuums": [
+    {
+      "min": 235,
+      "max": 390,
+      "speed": 1.4
+    }
+  ],
+  "bagels": [
+    {
+      "x": 170,
+      "y": 480
+    }
+  ],
   "route": [
     {
       "x": 248,
