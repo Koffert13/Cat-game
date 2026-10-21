@@ -163,16 +163,19 @@ export function createTextures(scene) {
     box(g, 10, 16, 3, 1, 0xffe2a0);
   });
   texture(scene, 'pot', 24, 28, g => {
-    box(g, 7, 2, 10, 2, 0x72876a);
-    box(g, 5, 4, 14, 3, 0x596f55);
-    box(g, 9, 1, 3, 8, 0x94a275);
-    box(g, 11, 7, 2, 7, 0x506c52);
-    box(g, 4, 9, 16, 4, INK);
-    box(g, 3, 10, 18, 5, 0xe6b28a);
-    box(g, 5, 15, 14, 9, 0xbb8067);
-    box(g, 7, 24, 10, 3, 0x866452);
-    box(g, 6, 15, 3, 8, 0xd59b79);
-    box(g, 11, 16, 7, 1, 0x9c705b);
+    // A little brass bell under glass: a very tempting object to boop.
+    box(g, 10, 1, 4, 3, 0x7e9785);
+    box(g, 7, 4, 10, 2, 0x7e9785);
+    box(g, 5, 6, 14, 3, 0x9db5a4);
+    box(g, 3, 9, 18, 15, 0x7e9785);
+    box(g, 5, 9, 14, 14, 0xc8d4b5);
+    box(g, 6, 9, 2, 11, 0xf1f0d8);
+    box(g, 11, 11, 3, 3, 0x987443);
+    box(g, 9, 14, 7, 6, 0xc99850);
+    box(g, 8, 19, 9, 2, 0xe8c477);
+    box(g, 11, 21, 3, 2, 0x987443);
+    box(g, 2, 24, 20, 3, 0x826645);
+    box(g, 3, 24, 18, 1, 0xd9b77b);
   });
   texture(scene, 'vacuum', 46, 24, g => {
     stepped(g, 1, 5, 44, 16, INK, 5);

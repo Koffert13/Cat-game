@@ -95,7 +95,7 @@ function updateJournal() {
   const c = state.cats[state.active];
   $('buff-status').textContent = isNassla ? (c.groom ? `Freshly groomed · ${Math.ceil(c.groom / 60)}s of extra bounce` : 'High jump · climb · boop') : (c.buff ? `Bagel power · ${Math.ceil(c.buff / 60)}s remaining` : 'Push · hold plates · groom Nässla');
   const objectives = [
-    ['objective-boop', `Nässla: boop ${state.pots.length > 1 ? 'both bell jars' : 'the bell jar'} off the shelf.`, bellReady(state)],
+    ['objective-boop', `Nässla: boop ${state.pots.length > 1 ? `all ${state.pots.length} bell jars` : 'the bell jar'} off the shelves.`, bellReady(state)],
     ['objective-plate', state.crate.settled ? 'Maliketh: stand on the brass plate.' : `Maliketh: ${l.heavy ? 'eat a bagel, then ' : ''}push the crate onto its outline.`, state.crate.settled && (plateHeld(state) || state.doorPropped)],
     ['objective-exit', state.doorPropped ? 'Door wedged! Bring both cats through.' : 'Nässla: cross the gate, hold E / ACT to meow for 3s.', state.won],
   ];
@@ -112,6 +112,7 @@ class Apartment extends Phaser.Scene {
   create() {
     scene = this;
     this.accumulator = 0;
+    this.lastJournalTick = -6;
     createTextures(this);
     drawRoom(this, state.level);
     const g = this.add.graphics();
@@ -164,7 +165,10 @@ class Apartment extends Phaser.Scene {
       this.accumulator -= 1000 / 60;
     }
     this.renderState();
-    if (state.tick % 6 === 0) updateJournal();
+    if (state.tick - this.lastJournalTick >= 6) {
+      updateJournal();
+      this.lastJournalTick = state.tick;
+    }
     if (state.won) {
       if (!progress.completed.includes(state.level.id)) progress.completed.push(state.level.id);
       persist(); updateJournal(); sound(660, .35, 1320);
@@ -286,4 +290,4 @@ new Phaser.Game({
 });
 
 // Read-only diagnostic snapshot, useful for accessibility tooling and browser smoke tests.
-Object.defineProperty(window, 'catGame', { get: () => ({ level: state.level.id, active: state.active, cats: state.cats.map(c => ({ x: c.x, y: c.y })), won: state.won, paused: paused(), completed: [...progress.completed] }) });
+Object.defineProperty(window, 'catGame', { get: () => ({ tick: state.tick, level: state.level.id, active: state.active, cats: state.cats.map(c => ({ x: c.x, y: c.y })), won: state.won, paused: paused(), completed: [...progress.completed] }) });

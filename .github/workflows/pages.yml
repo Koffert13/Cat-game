@@ -1,0 +1,89 @@
+name: Test and deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer main revision supersedes an older build or queued deployment.
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Replay every level and test game rules
+        run: npm test
+
+      - name: Build the browser game
+        run: npm run build
+
+      - name: Install the Playwright browser and system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke-test the production build on desktop and touch mobile
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run preview -- --port 4173 --strictPort > "$RUNNER_TEMP/cat-game-preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..40}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              break
+            fi
+            if ! kill -0 "$preview_pid" 2>/dev/null; then
+              cat "$RUNNER_TEMP/cat-game-preview.log"
+              exit 1
+            fi
+            sleep 0.5
+          done
+          curl --fail --silent --show-error http://127.0.0.1:4173/ > /dev/null
+          export BASE_URL=http://127.0.0.1:4173
+          export CHROMIUM_PATH="$(node --input-type=module -e 'import { chromium } from "playwright"; console.log(chromium.executablePath());')"
+          npm run test:browser
+
+      - name: Upload the verified site
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Enable Pages in repository Settings > Pages > Source: GitHub Actions.
+      # The standard workflow token cannot enable a new Pages site itself.
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Deploy the verified artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
