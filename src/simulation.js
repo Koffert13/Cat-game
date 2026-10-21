@@ -93,7 +93,8 @@ function moveCat(s, c, i, input) {
   for (const b of solids(s)) {
     if (!overlaps(c, b)) continue;
     if (c.vy >= 0 && oldY <= b.y + 1) { c.y = b.y; c.vy = 0; c.grounded = true; }
-    else if (c.vy < 0 && oldY - c.h >= b.y + b.h - 1) { c.y = b.y + b.h + c.h; c.vy = 0; }
+    // Scratching posts let Nässla pull herself through the shelf at their top.
+    else if (!wall && c.vy < 0 && oldY - c.h >= b.y + b.h - 1) { c.y = b.y + b.h + c.h; c.vy = 0; }
   }
   c.prevJump = jump;
 

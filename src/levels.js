@@ -69,4 +69,63 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 3,
+  "name": "The vertical option",
+  "room": "The living room",
+  "theme": "living",
+  "subtitle": "The sofa is lovely. The view from the scratching post is better.",
+  "hint": "Nässla can climb the striped scratching post: move beside it and hold jump.",
+  "lesson": "Climb the scratching post",
+  "difficulty": "A new perspective",
+  "platforms": [
+    {
+      "x": 180,
+      "y": 394,
+      "w": 110,
+      "h": 14
+    },
+    {
+      "x": 295,
+      "y": 250,
+      "w": 200,
+      "h": 14
+    }
+  ],
+  "climbWalls": [
+    {
+      "x": 300,
+      "y": 250,
+      "w": 20,
+      "h": 230
+    }
+  ],
+  "pots": [
+    {
+      "x": 452,
+      "y": 250
+    }
+  ],
+  "crateX": 550,
+  "socketX": 690,
+  "plateX": 773,
+  "gateX": 843,
+  "vacuums": [],
+  "bagels": [],
+  "route": [
+    {
+      "x": 240,
+      "y": 394
+    },
+    {
+      "x": 310,
+      "y": 250,
+      "climb": true
+    },
+    {
+      "x": 408,
+      "y": 250
+    }
+  ]
+},
 ];

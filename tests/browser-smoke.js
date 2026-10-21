@@ -1,0 +1,144 @@
+import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
+import { chromium } from 'playwright';
+import { levels } from '../src/levels.js';
+import { SAVE_KEY } from '../src/progress.js';
+
+const baseURL = process.env.BASE_URL || 'http://127.0.0.1:5173';
+const executable = process.env.CHROMIUM_PATH || '/usr/bin/chromium';
+const browser = await chromium.launch({ headless: true, ...(existsSync(executable) ? { executablePath: executable } : {}), args: ['--no-sandbox'] });
+const errors = [];
+const checkPage = page => {
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+};
+const snapshot = page => page.evaluate(() => window.catGame);
+async function ready(page) {
+  await page.goto(baseURL, { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => window.catGame && document.querySelector('#game canvas'));
+  await page.waitForFunction(() => window.catGame.cats.every(cat => cat.y === 480));
+}
+async function hold(page, key, milliseconds) {
+  await page.keyboard.down(key);
+  await page.waitForTimeout(milliseconds);
+  await page.keyboard.up(key);
+}
+async function checkPaused(page, opener, modal, closer) {
+  await page.locator(opener).click();
+  assert.equal(await page.locator(modal).isVisible(), true);
+  const before = await snapshot(page);
+  assert.equal(before.paused, true);
+  await hold(page, 'ArrowRight', 180);
+  await page.keyboard.press('q');
+  assert.deepEqual((await snapshot(page)).cats, before.cats, `${modal} must freeze both cats`);
+  assert.equal((await snapshot(page)).active, before.active, `${modal} must block switching`);
+  await page.locator(closer).click();
+  await page.waitForTimeout(80);
+  assert.equal((await snapshot(page)).paused, false);
+  const resumed = await snapshot(page);
+  assert.deepEqual(resumed.cats.map(cat => cat.x), before.cats.map(cat => cat.x), 'input typed in a dialog must not leak into play');
+  if (before.cats.some(cat => cat.y < 480)) assert.notDeepEqual(resumed.cats, before.cats, 'airborne physics resumes after closing the dialog');
+}
+try {
+  const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 1080 } });
+  const desktop = await desktopContext.newPage(); checkPage(desktop);
+  await ready(desktop);
+  const canvas = desktop.locator('#game canvas');
+  assert.equal(await canvas.count(), 1);
+  const box = await canvas.boundingBox();
+  assert.ok(box.width > 600 && box.height > 300, 'the real Phaser canvas must render at a usable desktop size');
+  assert.equal((await snapshot(desktop)).level, 1);
+  assert.equal((await snapshot(desktop)).active, 0);
+  const initial = await snapshot(desktop);
+  await hold(desktop, 'ArrowRight', 180);
+  assert.ok((await snapshot(desktop)).cats[0].x > initial.cats[0].x + 15, 'keyboard moves Nässla');
+  const stopped = (await snapshot(desktop)).cats[0].x;
+  await desktop.waitForTimeout(120);
+  assert.equal((await snapshot(desktop)).cats[0].x, stopped, 'keyup stops horizontal movement');
+  await hold(desktop, 'Space', 140);
+  assert.ok((await snapshot(desktop)).cats[0].y < 450, 'Space starts a real jump');
+  await desktop.waitForFunction(() => window.catGame.cats[0].y === 480);
+  await desktop.keyboard.press('q');
+  await desktop.waitForFunction(() => window.catGame.active === 1);
+  await desktop.waitForFunction(() => document.querySelector('#cat-name').textContent === 'Maliketh');
+  await hold(desktop, 'ArrowLeft', 100);
+  assert.ok((await snapshot(desktop)).cats[1].x < initial.cats[1].x - 5, 'keyboard controls the selected second cat');
+  await desktop.keyboard.press('r');
+  await desktop.waitForFunction(() => window.catGame.active === 0 && window.catGame.cats[0].x === 90 && window.catGame.cats[1].x === 132);
+  await hold(desktop, 'Space', 100);
+  assert.ok((await snapshot(desktop)).cats[0].y < 470);
+  await checkPaused(desktop, '#help-toggle', '#help-menu', '#close-help');
+  await desktop.waitForFunction(() => window.catGame.cats[0].y === 480);
+  await checkPaused(desktop, '#open-levels', '#level-menu', '#close-levels');
+  await desktop.locator('#open-levels').click();
+  assert.equal(await desktop.locator('#level-grid button').count(), levels.length);
+  assert.equal(await desktop.locator('#level-grid button:disabled').count(), levels.length - 1, 'unplayed rooms start locked');
+  await desktop.keyboard.press('Escape');
+  assert.equal(await desktop.locator('#level-menu').isVisible(), false);
+  await desktop.locator('#toggle-sound').click();
+  assert.equal(await desktop.locator('#toggle-sound').getAttribute('aria-pressed'), 'true');
+  await desktop.reload({ waitUntil: 'networkidle' });
+  assert.equal(await desktop.locator('#toggle-sound').getAttribute('aria-pressed'), 'true', 'sound preference persists');
+  // A seeded save tests restoration only; completion itself is exercised by physics replay tests.
+  await desktop.evaluate(({ key, current }) => localStorage.setItem(key, JSON.stringify({ completed: [1], current, sound: false })), { key: SAVE_KEY, current: levels.length > 1 ? 1 : 0 });
+  await desktop.reload({ waitUntil: 'networkidle' });
+  await desktop.waitForFunction(id => window.catGame?.level === id, Math.min(2, levels.length));
+  assert.deepEqual((await snapshot(desktop)).completed, [1]);
+  await desktop.locator('#restart-level').click();
+  assert.deepEqual((await snapshot(desktop)).completed, [1], 'restart preserves saved progress');
+  await desktop.locator('#open-levels').click();
+  assert.equal(await desktop.locator('#level-grid button:not(:disabled)').count(), Math.min(2, levels.length));
+  await desktop.locator('#level-grid button').first().click();
+  await desktop.waitForFunction(() => window.catGame.level === 1 && !window.catGame.paused);
+  await desktop.screenshot({ path: '/tmp/cat-game-desktop.png', fullPage: true });
+  await desktop.evaluate(key => localStorage.setItem(key, '{broken'), SAVE_KEY);
+  await desktop.reload({ waitUntil: 'networkidle' });
+  await desktop.waitForFunction(() => window.catGame?.level === 1);
+  assert.deepEqual((await snapshot(desktop)).completed, [], 'corrupt browser storage recovers safely');
+  console.log('PASS desktop: Phaser canvas, keyboard move/jump/switch, restart, modal pause, locks, persisted preferences/progress, corrupt storage');
+
+  const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36' });
+  const mobile = await mobileContext.newPage(); checkPage(mobile); await ready(mobile);
+  assert.equal(await mobile.locator('#touch-controls').isVisible(), true);
+  assert.equal(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'mobile page must not overflow horizontally');
+  const touchRight = mobile.locator('[data-control="right"]');
+  const touchJump = mobile.locator('[data-control="jump"]');
+  await touchRight.scrollIntoViewIfNeeded();
+  const rightBox = await touchRight.boundingBox(), jumpBox = await touchJump.boundingBox();
+  assert.ok(rightBox.width >= 44 && rightBox.height >= 44, 'touch target meets a usable size');
+  const point = (rect, id) => ({ x: rect.x + rect.width / 2, y: rect.y + rect.height / 2, id, radiusX: 5, radiusY: 5, force: 1 });
+  const cdp = await mobileContext.newCDPSession(mobile);
+  const beforeTouch = await snapshot(mobile);
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [point(rightBox, 1), point(jumpBox, 2)] });
+  await mobile.waitForTimeout(180);
+  const duringTouch = await snapshot(mobile);
+  assert.ok(duringTouch.cats[0].x > beforeTouch.cats[0].x + 15, 'real touch moves right');
+  assert.ok(duringTouch.cats[0].y < beforeTouch.cats[0].y - 20, 'simultaneous second touch jumps while moving');
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
+  await mobile.waitForTimeout(60);
+  const afterCancel = (await snapshot(mobile)).cats[0].x;
+  await mobile.waitForTimeout(140);
+  assert.equal((await snapshot(mobile)).cats[0].x, afterCancel, 'touch cancellation clears held movement');
+  assert.equal(await mobile.locator('[data-control].pressed').count(), 0, 'cancel clears pressed controls');
+  await mobile.waitForFunction(() => window.catGame.cats[0].y === 480);
+  await mobile.locator('#touch-switch').tap();
+  await mobile.waitForFunction(() => window.catGame.active === 1);
+  const leftBox = await mobile.locator('[data-control="left"]').boundingBox();
+  const beforeLeft = (await snapshot(mobile)).cats[1].x;
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [point(leftBox, 3)] });
+  await mobile.waitForTimeout(140);
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  assert.ok((await snapshot(mobile)).cats[1].x < beforeLeft - 10, 'touch switch selects Maliketh for movement');
+  const afterRelease = (await snapshot(mobile)).cats[1].x;
+  await mobile.waitForTimeout(120);
+  assert.equal((await snapshot(mobile)).cats[1].x, afterRelease, 'touch release clears held movement');
+  await mobile.locator('#restart-level').tap();
+  await mobile.waitForFunction(() => window.catGame.active === 0 && window.catGame.cats[0].x === 90);
+  await mobile.screenshot({ path: '/tmp/cat-game-mobile.png', fullPage: true });
+  console.log('PASS Android-emulated Chromium: responsive canvas, physical multi-touch movement/jump, switch, pointer cancellation and release');
+  assert.deepEqual(errors, [], 'no JavaScript exceptions or browser console errors');
+  console.log('PASS no browser runtime errors. Screenshots: /tmp/cat-game-desktop.png and /tmp/cat-game-mobile.png');
+  await desktopContext.close(); await mobileContext.close();
+} finally {
+  await browser.close();
+}
