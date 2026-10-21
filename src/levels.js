@@ -12,4 +12,61 @@ export const levels = [
     vacuums: [], bagels: [],
     route: [{ x: 270, y: 402 }, { x: 388, y: 324 }],
   },
+{
+  "id": 2,
+  "name": "Counter intelligence",
+  "room": "The kitchen",
+  "theme": "kitchen",
+  "subtitle": "A suspiciously breakable object. A perfectly good countertop.",
+  "hint": "Hop from shelf to shelf. Hold E / ACT and a direction to push with Maliketh.",
+  "lesson": "Careful shelf hops",
+  "difficulty": "Finding your feet",
+  "platforms": [
+    {
+      "x": 180,
+      "y": 408,
+      "w": 125,
+      "h": 14
+    },
+    {
+      "x": 310,
+      "y": 326,
+      "w": 115,
+      "h": 14
+    },
+    {
+      "x": 430,
+      "y": 244,
+      "w": 125,
+      "h": 14
+    }
+  ],
+  "climbWalls": [],
+  "pots": [
+    {
+      "x": 510,
+      "y": 244
+    }
+  ],
+  "crateX": 545,
+  "socketX": 690,
+  "plateX": 773,
+  "gateX": 843,
+  "vacuums": [],
+  "bagels": [],
+  "route": [
+    {
+      "x": 248,
+      "y": 408
+    },
+    {
+      "x": 368,
+      "y": 326
+    },
+    {
+      "x": 466,
+      "y": 244
+    }
+  ]
+},
 ];
