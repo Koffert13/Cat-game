@@ -36,13 +36,21 @@ export function solveLevel(level, { record = false } = {}) {
   }
   for (const point of level.route) {
     const c = state.cats[0];
+    const ledge = level.platforms.find(p => Math.abs(p.y - point.y) < 2 && point.x >= p.x && point.x <= p.x + p.w);
     if (c.y > point.y + 5 && Math.abs(c.x - point.x) > 95) {
       walk(point.x - Math.sign(point.x - c.x) * 90);
     }
     tick(); // Release jump before each new leap.
     until(() => Math.abs(c.x - point.x) < 7 && Math.abs(c.y - point.y) < 3 && c.grounded,
-      () => ({ left: c.x > point.x + 2, right: c.x < point.x - 2,
-        jump: !!point.climb || (c.grounded && c.y > point.y + 4 && !c.prevJump), action: true }),
+      () => {
+        // Stay beside a shelf until our feet clear its top. Charging beneath a
+        // high shelf would hit its underside before the boosted jump peaks.
+        const speed = c.groom ? 3.6 : 3;
+        const rightUnder = !point.climb && ledge && c.y > point.y && c.x < ledge.x && c.x + c.w / 2 + speed > ledge.x;
+        const leftUnder = !point.climb && ledge && c.y > point.y && c.x > ledge.x + ledge.w && c.x - c.w / 2 - speed < ledge.x + ledge.w;
+        return { left: c.x > point.x + 2 && !leftUnder, right: c.x < point.x - 2 && !rightUnder,
+          jump: !!point.climb || (c.grounded && c.y > point.y + 4 && !c.prevJump), action: true };
+      },
       700, `route waypoint ${JSON.stringify(point)}`);
     tick({ action: true });
   }

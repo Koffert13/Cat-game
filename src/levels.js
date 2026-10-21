@@ -128,4 +128,52 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 4,
+  "name": "A little encouragement",
+  "room": "The bedroom",
+  "theme": "bedroom",
+  "subtitle": "Some mornings, even a high jumper needs a little love.",
+  "hint": "Switch to Maliketh and press E / ACT beside Nässla to groom her. The first shelf needs that boost!",
+  "lesson": "Groom for extra bounce",
+  "difficulty": "A helping paw",
+  "requiresGroom": true,
+  "platforms": [
+    {
+      "x": 230,
+      "y": 316,
+      "w": 150,
+      "h": 14
+    },
+    {
+      "x": 365,
+      "y": 218,
+      "w": 155,
+      "h": 14
+    }
+  ],
+  "climbWalls": [],
+  "pots": [
+    {
+      "x": 478,
+      "y": 218
+    }
+  ],
+  "crateX": 540,
+  "socketX": 690,
+  "plateX": 773,
+  "gateX": 843,
+  "vacuums": [],
+  "bagels": [],
+  "route": [
+    {
+      "x": 280,
+      "y": 316
+    },
+    {
+      "x": 434,
+      "y": 218
+    }
+  ]
+},
 ];
