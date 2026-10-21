@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3f0e6" />
+    <meta name="description" content="Two cats. Ten rooms. A cozy pixel-art puzzle adventure starring Nässla and Maliketh." />
+    <title>Paws &amp; Parquet — A two-cat adventure</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="Paws and Parquet home">
+          <span class="brand-cat" aria-hidden="true"><i></i></span>
+          <span><strong>paws &amp; parquet<span class="brand-period">.</span></strong><small>A TWO-CAT ADVENTURE</small></span>
+        </a>
+        <nav class="header-actions" aria-label="Game options">
+          <button id="toggle-sound" class="text-button sound-button" type="button" aria-pressed="false">Sound off</button>
+          <span class="nav-divider" aria-hidden="true"></span>
+          <button id="help-toggle" class="text-button" type="button">How to play <span aria-hidden="true" class="help-arrow"></span></button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="room-header" aria-labelledby="room-name">
+          <div class="room-title-group">
+            <p id="screen-title" class="eyebrow"><span class="tiny-star" aria-hidden="true">✳︎</span> THE APARTMENT CHRONICLES</p>
+            <h1 id="room-name">The hallway</h1>
+            <p id="room-copy" class="room-intro">Every great adventure starts with getting out of the room.</p>
+          </div>
+          <button id="open-levels" class="button room-select-button" type="button">
+            <span class="grid-icon" aria-hidden="true">▦</span>
+            <span>Explore the apartment</span>
+            <span id="level-number" class="level-count">01 / 10</span>
+          </button>
+        </section>
+
+        <div class="play-layout">
+          <section class="game-column" aria-label="Game area">
+            <div class="game-frame">
+              <div class="frame-topline"><span><i class="live-dot" aria-hidden="true"></i> A LITTLE TROUBLE AT HOME</span><span>EST. TWO VERY GOOD CATS</span></div>
+              <div id="game" tabindex="0" role="application" aria-label="Cat platformer. Use arrow keys to move, Space to jump, E to interact, and Q to switch cats."></div>
+              <div class="game-toolbar">
+                <p id="status-message" aria-live="polite">A new room. The same two troublemakers.</p>
+                <button id="restart-level" class="restart-button" type="button" aria-label="Restart this room"><span aria-hidden="true">↻</span> Restart room</button>
+              </div>
+            </div>
+
+            <div id="touch-controls" class="touch-controls" aria-label="Touch game controls">
+              <div class="touch-direction">
+                <button type="button" data-control="left" aria-label="Move left">←</button>
+                <button type="button" data-control="right" aria-label="Move right">→</button>
+              </div>
+              <button id="touch-switch" class="touch-switch" type="button" aria-label="Switch cat"><span aria-hidden="true">⇄</span><small>SWITCH</small></button>
+              <div class="touch-actions">
+                <button type="button" data-control="action" class="touch-action" aria-label="Interact: boop, push, groom, or meow"><span aria-hidden="true">✦</span><small>ACT</small></button>
+                <button type="button" data-control="jump" class="touch-jump" aria-label="Jump or climb"><span aria-hidden="true">↑</span><small>JUMP</small></button>
+              </div>
+            </div>
+
+            <div class="keyboard-hints" aria-label="Keyboard controls">
+              <span><kbd>←</kbd><kbd>→</kbd> move</span>
+              <span><kbd>SPACE</kbd> jump / climb</span>
+              <span><kbd>E</kbd> interact</span>
+              <span><kbd>Q</kbd> switch cat</span>
+              <span class="hint-end">Two cats are better than one.</span>
+            </div>
+          </section>
+
+          <aside class="journal" aria-label="Room journal">
+            <section class="cat-card" aria-labelledby="cat-name">
+              <div class="section-label"><span>ON PAW DUTY</span><span class="tiny-paw" aria-hidden="true">✦</span></div>
+              <div class="cat-portrait" aria-hidden="true"><div class="portrait-cat"><i class="cat-eye eye-left"></i><i class="cat-eye eye-right"></i><i class="cat-nose"></i><i class="cat-whisker whisker-left"></i><i class="cat-whisker whisker-right"></i></div><span class="portrait-star star-one">✦</span><span class="portrait-star star-two">+</span></div>
+              <h2 id="cat-name">Nässla</h2>
+              <p id="cat-description">Little paws. Big jumps. An excellent eye for things that belong on the floor.</p>
+              <p id="buff-status" class="buff-status">Light-footed &amp; endlessly curious</p>
+              <button id="switch-cat" class="button switch-button" type="button"><span aria-hidden="true">⇄</span> Switch cat <kbd>Q</kbd></button>
+            </section>
+
+            <section class="objectives-card" aria-label="Room objectives">
+              <div class="section-label"><span>THE PLAN</span><span class="plan-number" aria-hidden="true">01—03</span></div>
+              <ol class="objective-list">
+                <li><span class="objective-marker" aria-hidden="true">1</span><span id="objective-boop">Nässla: find something to boop.</span></li>
+                <li><span class="objective-marker" aria-hidden="true">2</span><span id="objective-plate">Maliketh: put your weight into it.</span></li>
+                <li><span class="objective-marker" aria-hidden="true">3</span><span id="objective-exit">Get both cats to the door.</span></li>
+              </ol>
+              <div class="journal-note"><span aria-hidden="true">✳︎</span><p>A little patience.<br>A little feline ingenuity.</p></div>
+            </section>
+          </aside>
+        </div>
+      </main>
+      <footer class="site-footer"><span>TEN ROOMS. TWO CATS. ONE HOME.</span><span>Progress saved on this device <span class="save-dot" aria-hidden="true"></span></span></footer>
+    </div>
+
+    <section id="level-menu" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="levels-title" hidden>
+      <div class="modal level-modal">
+        <div class="modal-top"><p class="eyebrow">MAKE YOURSELF AT HOME</p><button id="close-levels" class="icon-button" type="button" aria-label="Close level select">×</button></div>
+        <h2 id="levels-title">A whole home of mischief.</h2>
+        <p class="modal-intro">Ten rooms to explore, one clever pair of cats. Finish a room to open the next.</p>
+        <div id="level-grid" class="level-grid"></div>
+        <p class="modal-footnote">Your progress stays right here, on this device.</p>
+      </div>
+    </section>
+
+    <section id="help-menu" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+      <div class="modal help-modal">
+        <div class="modal-top"><p class="eyebrow">A QUICK ORIENTATION</p><button id="close-help" class="icon-button" type="button" aria-label="Close instructions">×</button></div>
+        <h2 id="help-title">Small paws. Clever plans.</h2>
+        <p class="modal-intro">Each room needs both cats. Switch whenever you like; your other cat stays where you left them.</p>
+        <div class="help-cats"><article><span class="help-cat-dot grey"></span><h3>Nässla</h3><p>Jump high, climb marked surfaces, and boop small objects off shelves.</p></article><article><span class="help-cat-dot ginger"></span><h3>Maliketh</h3><p>Push crates, hold heavy pressure plates, and eat bagels for extra strength. Groom Nässla for a boost.</p></article></div>
+        <dl class="controls-list"><div><dt><kbd>←</kbd> <kbd>→</kbd> / <kbd>A</kbd> <kbd>D</kbd></dt><dd>Move</dd></div><div><dt><kbd>SPACE</kbd> / <kbd>W</kbd> / <kbd>↑</kbd></dt><dd>Jump or climb</dd></div><div><dt><kbd>E</kbd></dt><dd>Boop, push, groom, or meow</dd></div><div><dt><kbd>Q</kbd> / <kbd>TAB</kbd></dt><dd>Switch cats</dd></div><div><dt><kbd>R</kbd></dt><dd>Restart the room</dd></div></dl>
+        <p class="help-tip"><strong>On a phone?</strong> Use the buttons below the room. Hold an arrow to move, hold ↑ to climb, and use ✦ to interact.</p>
+        <p class="help-tip">Watch out for the robot vacuum. At a closed door, a persistent three-second meow can work wonders.</p>
+      </div>
+    </section>
+
+    <section id="completion-menu" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="completion-title" hidden>
+      <div class="modal completion-modal">
+        <div class="completion-ornament" aria-hidden="true">✦<span>⌂</span>✦</div>
+        <p class="eyebrow">ANOTHER ROOM, BEAUTIFULLY UNRAVELED</p>
+        <h2 id="completion-title">Pawsitively brilliant.</h2>
+        <p id="completion-copy" class="modal-intro">Two cats. One very good plan.</p>
+        <div class="completion-actions"><button id="next-level" class="button primary-button" type="button">Next room <span aria-hidden="true">→</span></button><button id="completion-levels" class="button" type="button">Explore the apartment</button></div>
+      </div>
+    </section>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
