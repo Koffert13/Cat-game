@@ -2,6 +2,8 @@
 
 Two cats. One apartment. Ten small adventures.
 
+**[Play Paws & Parquet](https://koffert13.github.io/Cat-game/)**
+
 A browser puzzle platformer built with Phaser 3. Switch between **Nässla**, a nimble grey kitten, and **Maliketh**, a round tabby with a weakness for bagels. Both cats must cooperate to finish each room. Every sprite and room is pixel art drawn in JavaScript; there are no external image assets.
 
 ## Play locally
@@ -69,16 +71,11 @@ Browser checks cover a real Phaser canvas, keyboard movement/jumping/switching, 
 
 [The deployment workflow](.github/workflows/pages.yml) runs on pushes to `main` and can be started manually. Its build job installs locked dependencies, runs the level tests, builds `dist/`, and runs desktop and touch smoke tests against that production build. Only a successful build is passed to the separate Pages deployment job. Action revisions are pinned to verified release commits.
 
-**The deployment workflow is prepared, but the live site still requires Pages to be enabled.** GitHub reports `has_pages: false`. Network access to the GitHub API works, but the connected integration returns `403 Resource not accessible by integration` for the Pages API. Repository access and Git pushes work; the integration does not have the Pages access needed to finish publishing. A successful Git push does not establish that Pages is enabled.
+The game is published at **https://koffert13.github.io/Cat-game/**. Pages is enabled with **GitHub Actions** as its publishing source. Future pushes to `main` rebuild and redeploy automatically; documentation-only commits may use GitHub's `[skip ci]` marker when the game build is unchanged.
 
-If Pages is not enabled yet, a repository administrator or maintainer can finish setup:
+To find or run the workflow, open the repository's **Actions** tab and select **Test and deploy to GitHub Pages** in the workflow list. [Open that workflow directly](https://github.com/Koffert13/Cat-game/actions/workflows/pages.yml). Use **Run workflow → main → Run workflow** for a manual deployment. The [first successful deployment](https://github.com/Koffert13/Cat-game/actions/runs/39623197418) includes the level tests, browser checks, and Pages publishing job.
 
-1. Open [Settings → Pages](https://github.com/Koffert13/Cat-game/settings/pages).
-2. Under **Build and deployment → Source**, select **GitHub Actions**.
-3. Open [Actions → Test and deploy to GitHub Pages](https://github.com/Koffert13/Cat-game/actions/workflows/pages.yml), select **Run workflow**, and run it on `main`.
-4. Wait for both jobs to pass, then use the URL reported by the deployment job or the **Visit site** link in Pages settings.
-
-The expected default address is `https://koffert13.github.io/Cat-game/`; treat it as the target address until a successful deployment and a live browser check confirm it. Future pushes to `main` rebuild and redeploy automatically once Pages is enabled.
+The **Visit site** link is also available under [Settings → Pages](https://github.com/Koffert13/Cat-game/settings/pages).
 
 ## Project map
 
