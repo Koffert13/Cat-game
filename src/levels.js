@@ -547,4 +547,99 @@ export const levels = [
     }
   ]
 },
+{
+  "id": 10,
+  "name": "The finest view in the house",
+  "room": "The attic nook",
+  "theme": "attic",
+  "subtitle": "One last room. Three little bells. Two very good cats.",
+  "hint": "Everything you have learned: groom, climb, boop all THREE jars, snack, push, hold and meow. Together.",
+  "lesson": "The whole apartment finale",
+  "difficulty": "Master of the apartment",
+  "requiresGroom": true,
+  "heavy": true,
+  "platforms": [
+    {
+      "x": 200,
+      "y": 310,
+      "w": 145,
+      "h": 14
+    },
+    {
+      "x": 335,
+      "y": 180,
+      "w": 145,
+      "h": 14
+    },
+    {
+      "x": 480,
+      "y": 95,
+      "w": 155,
+      "h": 14
+    }
+  ],
+  "climbWalls": [
+    {
+      "x": 350,
+      "y": 180,
+      "w": 20,
+      "h": 300
+    }
+  ],
+  "pots": [
+    {
+      "x": 300,
+      "y": 310
+    },
+    {
+      "x": 438,
+      "y": 180
+    },
+    {
+      "x": 590,
+      "y": 95
+    }
+  ],
+  "crateX": 565,
+  "socketX": 705,
+  "plateX": 780,
+  "gateX": 843,
+  "vacuums": [
+    {
+      "min": 232,
+      "max": 420,
+      "speed": 1.9
+    },
+    {
+      "min": 470,
+      "max": 665,
+      "speed": 1.6
+    }
+  ],
+  "bagels": [
+    {
+      "x": 168,
+      "y": 480
+    }
+  ],
+  "route": [
+    {
+      "x": 256,
+      "y": 310
+    },
+    {
+      "x": 360,
+      "y": 180,
+      "climb": true
+    },
+    {
+      "x": 395,
+      "y": 180
+    },
+    {
+      "x": 547,
+      "y": 95
+    }
+  ]
+},
 ];
